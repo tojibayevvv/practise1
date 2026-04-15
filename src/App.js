@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
 
 const defFriends = [
   {
@@ -51,14 +52,24 @@ function FriendList() {
           <div className="friend__details">
             <h3>{person.name}</h3>
             {person.balance < 0 && (
-              <p className="debt">
-                {person.name} owes you {Math.abs(person.balance)}$
-              </p>
+              <div className="details">
+                <p className="debt">
+                  {person.name} owes you {Math.abs(person.balance)}$
+                </p>
+                <span>
+                  <FaArrowTrendDown />
+                </span>
+              </div>
             )}
             {person.balance > 0 && (
-              <p className="positive">
-                You owe {person.name} {person.balance}$
-              </p>
+              <div className="details">
+                <p>
+                  You owe {person.name} {person.balance}$
+                </p>
+                <span>
+                  <FaArrowTrendUp />
+                </span>
+              </div>
             )}
             {person.balance === 0 && (
               <p className="equal">You and {person.name} are even</p>
@@ -77,7 +88,7 @@ function AddModal() {
         <label>Bill</label>
         <input type="text" placeholder="200" />
         <label>Your Expense</label>
-        <input type="text"  />
+        <input type="text" />
         <label>XXX's Expense</label>
         <input type="text" disabled />
         <label>Who is paying?</label>

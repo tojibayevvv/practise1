@@ -1,14 +1,14 @@
-ul{
+ul {
   padding: 0;
 }
 
-form{
+form {
   display: flex;
   flex-direction: column;
   width: 90%;
 }
 
-input{
+input {
   padding: 12px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -17,7 +17,7 @@ input{
   box-sizing: border-box;
 }
 
-select{
+select {
   padding: 12px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -26,9 +26,17 @@ select{
   box-sizing: border-box;
 }
 
-label{
+label {
   margin-bottom: 5px;
   font-weight: bold;
+}
+
+h3 {
+  color: #f0f0f0;
+}
+
+p {
+  color: #fff;
 }
 
 .app {
@@ -40,14 +48,15 @@ label{
 .sidebar {
   width: 400px;
   height: 100vh;
-  background-color: #f0f0f0;
+  background-color: #fff;
   padding: 20px;
 }
 
 .add-modal {
   width: 400px;
   height: 80vh;
-  background-color: #f0f0f0;
+  background: linear-gradient(to right, #6caeff, #4c9af5);
+  color: #f0f0f0;
   border-radius: 10px;
   padding: 20px;
   margin-top: 50px;
@@ -69,9 +78,19 @@ label{
   gap: 12px;
   margin-bottom: 20px;
   padding: 10px;
-  background-color: #fff;
+  background: linear-gradient(to right, #6caeff, #4c9af5);
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.details {
+  display: flex;
+  align-items: start;
+  gap: 5px;
+  color: #fff;
+}
+.details > span {
+  font-size: 18px;
 }
 
 .friend__details {
@@ -87,19 +106,6 @@ label{
   margin: 0;
   font-size: 14px;
 }
-
-.debt{
-  color: red;
-}
-
-.positive{
-  color: green;
-}
-
-.equal{
-  color: black;
-}
-
 
 .App-logo {
   height: 40vmin;
