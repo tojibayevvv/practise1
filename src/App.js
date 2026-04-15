@@ -33,30 +33,30 @@ function Button({ children }) {
 export default function App() {
   const [friends, setFriends] = useState(defFriends);
 
-  function handleAddFriend(friend){
-    setFriends((friends) => [...friends, friend])
+  function handleAddFriend(friend) {
+    setFriends((friends) => [...friends, friend]);
   }
   return (
     <div className="app">
-      <SideBar />
+      <SideBar friends={friends} />
       <BillModal />
-      <AddFriend />
+      <AddFriend onAddFriend={handleAddFriend} />
     </div>
   );
 }
 
-function SideBar() {
+function SideBar({ friends }) {
   return (
     <div className="sidebar">
-      <FriendList />
+      <FriendList friend={friends} />
     </div>
   );
 }
 
-function FriendList() {
+function FriendList({ friend }) {
   return (
     <ul>
-      {defFriends.map((person) => (
+      {friend.map((person) => (
         <li key={person.id} className="friend">
           <img className="friend__image" src={person.image} alt={person.name} />
           <div className="friend__details">
@@ -133,11 +133,20 @@ function AddFriend({ onAddFriend }) {
   }
   return (
     <div className="bill_modal">
-      <form>
+      <form onSubmit={handleSubmit}>
         <label>Fried's Name</label>
-        <input value={name} type="text" placeholder="Josh" />
+        <input
+          value={name}
+          type="text"
+          placeholder="Josh"
+          onChange={(e) => setName(e.target.value)}
+        />
         <label>Friend's Image URL</label>
-        <input value={image} type="text" />
+        <input
+          value={image}
+          type="text"
+          onChange={(e) => setImage(e.target.value)}
+        />
         <Button>Submit</Button>
       </form>
     </div>
