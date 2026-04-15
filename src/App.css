@@ -1,3 +1,36 @@
+ul{
+  padding: 0;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+}
+
+input{
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+select{
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+label{
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
 .app {
   display: flex;
   align-items: start;
@@ -5,22 +38,68 @@
 }
 
 .sidebar {
-  width: 300px;
+  width: 400px;
   height: 100vh;
-  background-color: #f0f8ff;
+  background-color: #f0f0f0;
   padding: 20px;
-  border-right: 2px solid #ddd;
 }
 
 .add-modal {
   width: 400px;
-  height: 300px;
-  background-color: #fffacd;
-  border: 2px solid #ffa500;
+  height: 80vh;
+  background-color: #f0f0f0;
   border-radius: 10px;
   padding: 20px;
   margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.friend__image {
+  width: 100px;
+  height: 130px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.friend {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.friend__details {
+  flex: 1;
+}
+
+.friend__details h3 {
+  margin: 0 0 5px 0;
+  font-size: 18px;
+}
+
+.friend__details p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.debt{
+  color: red;
+}
+
+.positive{
+  color: green;
+}
+
+.equal{
+  color: black;
+}
+
 
 .App-logo {
   height: 40vmin;
