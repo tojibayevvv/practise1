@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
 
@@ -26,11 +26,21 @@ const defFriends = [
   },
 ];
 
+function Button({ children }) {
+  return <button>{children}</button>;
+}
+
 export default function App() {
+  const [friends, setFriends] = useState(defFriends);
+
+  function handleAddFriend(friend){
+    setFriends((friends) => [...friends, friend])
+  }
   return (
     <div className="app">
       <SideBar />
-      <AddModal />
+      <BillModal />
+      <AddFriend />
     </div>
   );
 }
@@ -81,9 +91,9 @@ function FriendList() {
   );
 }
 
-function AddModal() {
+function BillModal() {
   return (
-    <div className="add-modal">
+    <div className="bill_modal">
       <form>
         <label>Bill</label>
         <input type="text" placeholder="200" />
@@ -93,9 +103,42 @@ function AddModal() {
         <input type="text" disabled />
         <label>Who is paying?</label>
         <select>
-          <option value="">Me</option>
-          <option value="">[Friend name]</option>
+          <option value="user">Me</option>
+          <option value="friend">[Friend name]</option>
         </select>
+      </form>
+    </div>
+  );
+}
+
+function AddFriend({ onAddFriend }) {
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("https://i.pravatar.cc/48");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (!name || !image) return;
+
+    const id = crypto.randomUUID();
+    const newFriend = {
+      id,
+      name,
+      image: `${image}?=${id}`,
+      balance: 0,
+    };
+    onAddFriend(newFriend);
+
+    setName("");
+    setImage("https://i.pravatar.cc/48");
+  }
+  return (
+    <div className="bill_modal">
+      <form>
+        <label>Fried's Name</label>
+        <input value={name} type="text" placeholder="Josh" />
+        <label>Friend's Image URL</label>
+        <input value={image} type="text" />
+        <Button>Submit</Button>
       </form>
     </div>
   );

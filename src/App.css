@@ -39,6 +39,16 @@ p {
   color: #fff;
 }
 
+button {
+  padding: 12px;
+  color: #4c9af5;
+  font-weight: 700;
+  background-color: #fff;
+  border: none;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
 .app {
   display: flex;
   align-items: start;
@@ -52,7 +62,7 @@ p {
   padding: 20px;
 }
 
-.add-modal {
+.bill_modal {
   width: 400px;
   height: 80vh;
   background: linear-gradient(to right, #6caeff, #4c9af5);
