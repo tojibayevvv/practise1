@@ -64,8 +64,11 @@ export default function App() {
         select={selected}
         onSelection={handleSelection}
       />
-      <BillModal select={selected} onSplit={handleSplit} />
-      <AddFriend onAddFriend={handleAddFriend} />
+      {selected ? (
+        <BillModal select={selected} onSplit={handleSplit} />
+      ) : (
+        <AddFriend onAddFriend={handleAddFriend} />
+      )}
     </div>
   );
 }
