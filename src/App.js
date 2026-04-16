@@ -26,86 +26,154 @@ const defFriends = [
   },
 ];
 
-function Button({ children }) {
-  return <button>{children}</button>;
+function Button({ children, onClick }) {
+  return <button onClick={onClick}>{children}</button>;
 }
 
 export default function App() {
   const [friends, setFriends] = useState(defFriends);
+  const [selected, setSelected] = useState(null);
 
   function handleAddFriend(friend) {
     setFriends((friends) => [...friends, friend]);
   }
+
+  function handleSelection(friend) {
+    setSelected((cur) => (cur?.id === friend.id ? null : friend));
+  }
+
+  function handleSplit(friend, bill, paidByUser, whoIsPaying) {
+    const paidByFriend = bill - paidByUser;
+    let amount = 0;
+    if (whoIsPaying === "user") {
+      amount = -paidByFriend; // friend owes user
+    } else {
+      amount = paidByUser; // user owes friend
+    }
+    setFriends((friends) =>
+      friends.map((f) =>
+        f.id === friend.id ? { ...f, balance: f.balance + amount } : f
+      )
+    );
+  }
+
   return (
     <div className="app">
-      <SideBar friends={friends} />
-      <BillModal />
+      <SideBar
+        friends={friends}
+        select={selected}
+        onSelection={handleSelection}
+      />
+      <BillModal select={selected} onSplit={handleSplit} />
       <AddFriend onAddFriend={handleAddFriend} />
     </div>
   );
 }
 
-function SideBar({ friends }) {
+function SideBar({ friends, select, onSelection }) {
   return (
     <div className="sidebar">
-      <FriendList friend={friends} />
+      <FriendList friend={friends} select={select} onSelection={onSelection} />
     </div>
   );
 }
 
-function FriendList({ friend }) {
+function FriendList({ friend, select, onSelection }) {
   return (
     <ul>
-      {friend.map((person) => (
-        <li key={person.id} className="friend">
-          <img className="friend__image" src={person.image} alt={person.name} />
-          <div className="friend__details">
-            <h3>{person.name}</h3>
-            {person.balance < 0 && (
-              <div className="details">
-                <p className="debt">
-                  {person.name} owes you {Math.abs(person.balance)}$
-                </p>
-                <span>
-                  <FaArrowTrendDown />
-                </span>
-              </div>
-            )}
-            {person.balance > 0 && (
-              <div className="details">
-                <p>
-                  You owe {person.name} {person.balance}$
-                </p>
-                <span>
-                  <FaArrowTrendUp />
-                </span>
-              </div>
-            )}
-            {person.balance === 0 && (
-              <p className="equal">You and {person.name} are even</p>
-            )}
-          </div>
-        </li>
-      ))}
+      {friend.map((person) => {
+        const isSelected = select?.id === person.id;
+        return (
+          <li key={person.id} className="friend">
+            <img
+              className="friend__image"
+              src={person.image}
+              alt={person.name}
+            />
+            <div className="friend__details">
+              <h3>{person.name}</h3>
+              {person.balance < 0 && (
+                <div className="details">
+                  <p>
+                    {person.name} owes you {Math.abs(person.balance)}$
+                  </p>
+                  <span>
+                    <FaArrowTrendDown />
+                  </span>
+                </div>
+              )}
+              {person.balance > 0 && (
+                <div className="details">
+                  <p>
+                    You owe {person.name} {person.balance}$
+                  </p>
+                  <span>
+                    <FaArrowTrendUp />
+                  </span>
+                </div>
+              )}
+              {person.balance === 0 && <p>You and {person.name} are even</p>}
+            </div>
+            <Button onClick={() => onSelection(person)}>
+              {isSelected ? "Close" : "Select"}
+            </Button>
+          </li>
+        );
+      })}
     </ul>
   );
 }
 
-function BillModal() {
+function BillModal({ select, onSplit }) {
+  const [bill, setBill] = useState("");
+  const [paidByUser, setPaidByUser] = useState("");
+  const [whoIsPaying, setWhoIsPaying] = useState("user");
+  const paidByFriend = bill ? bill - paidByUser : "";
+
+  if (!select) {
+    return (
+      <div className="bill_modal">
+        <p>Select a friend first to split the bill.</p>
+      </div>
+    );
+  }
+
+  function handleSplit() {
+    if (!bill || !paidByUser) return;
+    onSplit(select, Number(bill), Number(paidByUser), whoIsPaying);
+    // Reset form
+    setBill("");
+    setPaidByUser("");
+    setWhoIsPaying("user");
+  }
+
   return (
     <div className="bill_modal">
       <form>
         <label>Bill</label>
-        <input type="text" placeholder="200" />
+        <input
+          type="text"
+          placeholder="e.g 200"
+          value={bill}
+          onChange={(e) => setBill(e.target.value)}
+        />
         <label>Your Expense</label>
-        <input type="text" />
-        <label>XXX's Expense</label>
-        <input type="text" disabled />
+        <input
+          type="text"
+          value={paidByUser}
+          onChange={(e) => setPaidByUser(e.target.value)}
+        />
+        <label>{select.name}'s Expense</label>
+        <input type="text" value={paidByFriend} disabled />
         <label>Who is paying?</label>
-        <select>
+        <select
+          value={whoIsPaying}
+          onChange={(e) => setWhoIsPaying(e.target.value)}
+        >
           <option value="user">Me</option>
-          <option value="friend">[Friend name]</option>
+          <option value="friend">{select.name}</option>
         </select>
+        <Button onClick={handleSplit}>Split</Button>
       </form>
     </div>
   );
